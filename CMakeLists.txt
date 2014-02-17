@@ -2,12 +2,15 @@ project(clunk)
 cmake_minimum_required(VERSION 2.6)
 set(CMAKE_USE_RELATIVE_PATHS TRUE)
 
-find_package(SDL REQUIRED)
+# modules
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+find_package(SDL2 REQUIRED)
 option(WITH_SSE "Use highly optimized SSE FFT/MDCT routines" false)
 
-if ( NOT SDL_FOUND )
-	message ( FATAL_ERROR "SDL not found!" )
-endif ( NOT SDL_FOUND )
+if ( NOT SDL2_FOUND )
+	message ( FATAL_ERROR "SDL2 not found!" )
+endif ( NOT SDL2_FOUND )
 
 set(clunk_VERSION_MAJOR 1)
 set(clunk_VERSION_MINOR 0)
@@ -18,7 +21,7 @@ endif(WIN32)
 
 add_definitions(-DCLUNKAPI=DLLEXPORT)
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
-include_directories(${SDL_INCLUDE_DIR})
+include_directories(${SDL2_INCLUDE_DIR})
 
 set(SOURCES 
 	buffer.cpp
@@ -66,8 +69,4 @@ add_library(clunk SHARED
 install(TARGETS clunk DESTINATION lib)
 install(FILES ${PUBLIC_HEADERS} DESTINATION include/clunk)
 
-target_link_libraries(clunk ${SDL_LIBRARY})
-if(BUILD_TEST)
-	add_executable(clunk-test test.cpp)
-	target_link_libraries(clunk-test clunk)
-endif(BUILD_TEST)
+target_link_libraries(clunk ${SDL2_LIBRARY})
