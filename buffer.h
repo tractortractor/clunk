@@ -22,6 +22,8 @@
 
 #include <sys/types.h>
 #include <string>
+#include <iostream>
+#include <SDL.h>
 #include "export_clunk.h"
 
 namespace clunk {
@@ -35,14 +37,14 @@ namespace clunk {
 class CLUNKAPI Buffer {
 public:
 	//! Default ctor, empty buffer.
-	inline Buffer(): ptr(NULL), size(0) {}
+	inline Buffer(): ptr(NULL), size(0), is_sdl_buffer(false) {}
 	//! Copy ctor
-	inline Buffer(const Buffer& c) : ptr(NULL), size(0) { *this = c; }
+	inline Buffer(const Buffer& c) : ptr(NULL), size(0), is_sdl_buffer(false) { *this = c; }
 	/*!
 		\brief Instantly allocates 'size' memory
 		\param[in] size size of the memory buffer 
 	*/ 
-	inline Buffer(int size): ptr(NULL), size(0) { set_size(size); }
+	inline Buffer(int size): ptr(NULL), size(0), is_sdl_buffer(false) { set_size(size); }
 
 	//! Destructor, deallocates buffer if needed
 	inline ~Buffer() { free(); }
@@ -108,7 +110,8 @@ public:
 	
 	//! Pops n bytes from the front
 	void pop(size_t n); 
-
+	bool is_sdl_buffer;
+	
 protected:
 	void *ptr;
 	size_t size;

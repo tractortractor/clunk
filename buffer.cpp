@@ -121,7 +121,10 @@ void* Buffer::reserve(const int more) {
 
 void Buffer::free() {
 	if (ptr != NULL) {
-		::free(ptr);
+		if (is_sdl_buffer)
+			SDL_FreeWAV((Uint8*)ptr);
+		else
+			::free(ptr);
 		ptr = NULL;
 		size = 0;
 	}
