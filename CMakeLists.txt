@@ -60,6 +60,7 @@ set(PUBLIC_HEADERS
 if (WITH_SSE)
 	set(SOURCES ${SOURCES} sse_fft_context.cpp)
 	add_definitions(-DCLUNK_USES_SSE)
+	add_definitions(-msse2)
 endif(WITH_SSE)
 
 add_library(clunk SHARED
