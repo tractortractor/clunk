@@ -27,8 +27,10 @@
 #include <assert.h>
 #include "clunk_assert.h"
 
-#if defined _MSC_VER || __APPLE__ || __FreeBSD__
+#ifdef NEED_POW10F
 #	define pow10f(x) powf(10.0f, (x))
+#endif
+#ifdef NEED_LOG2F
 #	define log2f(x) (logf(x) / M_LN2)
 #endif
 

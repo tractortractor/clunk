@@ -1,6 +1,7 @@
 project(clunk)
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.0)
 set(CMAKE_USE_RELATIVE_PATHS TRUE)
+include(CheckCXXSymbolExists)
 
 # modules
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -62,6 +63,17 @@ if (WITH_SSE)
 	add_definitions(-DCLUNK_USES_SSE)
 	add_definitions(-msse2)
 endif(WITH_SSE)
+
+check_cxx_symbol_exists(pow10f "math.h" HAVE_POW10F_FUNCTION)
+check_cxx_symbol_exists(log2f "math.h" HAVE_LOG2F_FUNCTION)
+
+if(NOT HAVE_POW10F_FUNCTION)
+	add_definitions(-DNEED_POW10F)
+endif()
+
+if(NOT HAVE_LOG2F_FUNCTION)
+	add_definitions(-DNEED_LOG2F)
+endif()
 
 add_library(clunk SHARED
 	${SOURCES}
