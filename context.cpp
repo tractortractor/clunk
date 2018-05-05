@@ -240,8 +240,10 @@ void Context::init(const int sample_rate, const Uint8 channels, int period_size)
 	
 	this->period_size = period_size;
 	
-	if ( SDL_OpenAudio(&src, &spec) < 0 )
+//	if ( SDL_OpenAudio(&src, &spec) < 0 ) // tractortractor's commented
+	if ( SDL_OpenAudio(&src, NULL) < 0 ) // tractortractor's added. Using NULL as second argument to force AUDIO_S16SYS.
 		throw_sdl(("SDL_OpenAudio(%d, %u, %d)", sample_rate, channels, period_size));
+	spec = src; // tractortractor's added
 	if (spec.format != AUDIO_S16SYS)
 		throw_ex(("SDL_OpenAudio(%d, %u, %d) returned format %d", sample_rate, channels, period_size, spec.format));
 	if (spec.channels < 2)
